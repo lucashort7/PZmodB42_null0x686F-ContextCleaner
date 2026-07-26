@@ -1,0 +1,3 @@
+UI_PTBR = {
+    UI_options_key_[HortWiz] Context Cleaner = "Janela do Context Cleaner",
+}
