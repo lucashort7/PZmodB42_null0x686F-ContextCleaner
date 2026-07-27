@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- `name=` now displays as `[null0x686F] ContextCleaner` in the in-game mod list, grouping it with the rest of the null0x686F suite (previously matched the raw mod id).
+- `mod.info` now explicitly declares `versionMin=42.0`.
+
 ## [0.1.0] - 2026-07-27
 
 ### Added

@@ -1,0 +1,71 @@
+[h1]null0x686F ContextCleaner[/h1]
+
+An O(1) context menu cleaner for Project Zomboid Build 42. Declutter right-click menus in real time with zero lag — no more scrolling past mods you don't care about to find the option you actually want.
+
+Originally based on [b]Context Cleaner[/b] by Anach — full credit to the original concept. This version is a complete rewrite from scratch, built to fix serious performance issues that showed up under heavy modlists.
+
+[hr][/hr]
+
+[h2]📸 Before / After[/h2]
+
+[img]https://i.imgur.com/c7Cvq2N.png[/img]
+[img]https://i.imgur.com/wQF7ghY.png[/img]
+
+[hr][/hr]
+
+[h2]🎯 Key Features[/h2]
+
+[list]
+[*] ⚡ [b]True O(1) filtering[/b] — a native monkeypatch on [i]ISContextMenu:addOption[/i], zero-GC allocations during menu rendering. No noticeable delay even with dozens of rules.
+[*] 🖱️ [b]Works on both menus[/b] — filters [i]OnFillInventoryObjectContextMenu[/i] and [i]OnFillWorldObjectContextMenu[/i] independently.
+[*] 🪟 [b]Dedicated config UI[/b] — the [i]ContextCleanerWindow[/i], no digging through text files to add a rule.
+[*] ✂️ [b]Hide or Fold[/b] — remove clutter outright, or tuck it into a collapsible submenu instead of losing it completely.
+[*] 🔍 [b]Flexible matching[/b] — exact text, wildcard (*), or full Lua patterns for power users.
+[*] 💾 [b]Persistent config[/b] — rules saved to [i]Zomboid/Lua/ContextCleaner_preset_default.txt[/i], survives between sessions.
+[/list]
+
+[hr][/hr]
+
+[h2]⚙️ How To Use[/h2]
+
+[list]
+[*] Press [b]Numpad 7[/b] (default keybind) to open the ContextCleaner window — this is the only way to open it, there's no menu entry for it (on purpose, keeps the menus you're trying to clean uncluttered too 😄).
+[*] Add a rule with 4 fields:
+[/list]
+
+[list]
+[*] [b]Pattern[/b] — the text to match against a menu option's name.
+[*] [b]Type[/b] — [i]exact[/i] (literal match), [i]wildcard[/i] (use [b]*[/b] for anything), or [i]luapattern[/i] (raw [url=https://www.lua.org/pil/20.2.html]Lua pattern[/url] for advanced matching).
+[*] [b]Action[/b] — [i]hide[/i] (remove it) or [i]fold[/i] (collapse it into a submenu instead).
+[*] [b]Scope[/b] — [i]all[/i], [i]inventory[/i], or [i]world[/i] — which menu the rule applies to.
+[/list]
+
+[img]https://i.imgur.com/zlGs4kJ.png[/img]
+
+[hr][/hr]
+
+[h2]🧠 A Word on Performance[/h2]
+
+The filtering itself is as optimized as it gets (O(1), zero-GC), but that doesn't mean [i]rule count[/i] is free. Stacking 30+ [i]exact[/i]/[i]wildcard[/i] rules in the window still means 30+ comparisons per menu option. Prefer a handful of well-written [b]Lua Patterns[/b] over a huge list of exact matches — one good pattern can replace a dozen individual rules.
+
+[hr][/hr]
+
+[h2]🔧 Compatibility[/h2]
+
+[list]
+[*] Project Zomboid [b]Build 42[/b]
+[*] Requires [b]null0x686F CoreLib[/b] (listed as a required item — Steam will prompt you to subscribe to it too)
+[/list]
+
+[hr][/hr]
+
+[h2]⭐ Support & Feedback[/h2]
+
+[list]
+[*] ⭐ Rate on the Workshop if it's useful to you
+[*] 💬 Bug reports and suggestions welcome in the comments
+[*] 🧩 Part of the [b]null0x686F[/b] mod suite — check my other mods for more QoL/dev tooling
+[*] 🔗 Source code: [url=https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner]github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner[/url]
+[/list]
+
+Enjoy the cleaner menus! 🧹
