@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-27
+
 ### Changed
-- `name=` now displays as `[null0x686F] ContextCleaner` in the in-game mod list, grouping it with the rest of the null0x686F suite (previously matched the raw mod id).
-- `mod.info` now explicitly declares `versionMin=42.0`.
+
+-   `name=` now displays as `[null0x686F] ContextCleaner` in the in-game mod list, grouping it with the rest of the null0x686F suite (previously matched the raw mod id).
+-   `mod.info` now explicitly declares `versionMin=42.0`.
 
 ## [0.1.0] - 2026-07-27
 
@@ -27,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Context menu processing could double-fire on the same menu open, producing duplicate log lines and redundant work.
 -   Log lines no longer repeat the mod name twice.
 
-[Unreleased]: https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner/compare/v0.1.1...HEAD
+
+[0.1.1]: https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner/compare/v0.1.0...v0.1.1
 
 [0.1.0]: https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner/compare/4ddf7f39e816ab4cd28b2971f88032c24e2a4a58...v0.1.0
