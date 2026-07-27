@@ -3,7 +3,7 @@ local context_cleaner = require("null0x686F_ContextCleaner/context_cleaner")
 
 local function _init()
   context_cleaner.init()
-  log.info("null0x686F_ContextCleaner suite initialized successfully")
+  log.info("Suite initialized successfully")
 end
 
 Events.OnGameStart.Add(_init)

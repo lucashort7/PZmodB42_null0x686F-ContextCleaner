@@ -1,22 +1,36 @@
-require("ISUI/ISUIElement")
+local _mod_id = "null0x686F_ContextCleaner"
+local _mod_name = "null0x686F ContextCleaner"
+local _key_id = "ContextCleaner_ToggleKey"
 
 local _keyboard = Keyboard
-local _numpad7_key = (_keyboard and _keyboard.KEY_NUMPAD7) or 71
+local _default_key = (_keyboard and _keyboard.KEY_NUMPAD7) or 71
 
-if not keyBinding then keyBinding = {} end
-
-local key_id = "[null0x686F] Context Cleaner"
-local exists = false
-for i = 1, #keyBinding do
-  if keyBinding[i] and keyBinding[i].value == key_id then
-    exists = true
-    break
+local function _init_mod_options()
+  if not (PZAPI and PZAPI.ModOptions and PZAPI.ModOptions.create) then
+    return
   end
+
+  local options = PZAPI.ModOptions:create(_mod_id, _mod_name)
+  if not options then return end
+
+  options:addKeyBind(_key_id, "Toggle Context Cleaner Window", _default_key)
 end
 
-if not exists then
-  table.insert(keyBinding, {
-    value = key_id,
-    key = _numpad7_key
-  })
+local function get_bound_key()
+  if PZAPI and PZAPI.ModOptions and PZAPI.ModOptions.getOptions then
+    local opts = PZAPI.ModOptions:getOptions(_mod_id)
+    if opts then
+      local kb = opts:getOption(_key_id)
+      if kb and kb:getValue() then
+        return kb:getValue()
+      end
+    end
+  end
+  return _default_key
 end
+
+Events.OnGameBoot.Add(_init_mod_options)
+
+return {
+  get_bound_key = get_bound_key,
+}

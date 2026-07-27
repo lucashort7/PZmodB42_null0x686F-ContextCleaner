@@ -1,4 +1,4 @@
-require("null0x686F_ContextCleaner/context_cleaner_keybinds")
+local context_cleaner_keybinds = require("null0x686F_ContextCleaner/context_cleaner_keybinds")
 
 local cfg = require("null0x686F_ContextCleaner/cfg")
 local log = require("null0x686F_ContextCleaner/log")
@@ -23,7 +23,7 @@ function context_cleaner.reload_preset(preset_id)
   cfg.fold_title = (data and data.fold_title) and data.fold_title or "[Utility Menus]"
   cfg.active_rules = (data and data.rules) and data.rules or {}
 
-  log.debug(_string_format("[ContextCleaner] Loaded %d rules for preset '%s' (Fold Title: '%s')", #cfg.active_rules, id, cfg.fold_title))
+  log.debug(_string_format("Loaded %d rules for preset '%s' (Fold Title: '%s')", #cfg.active_rules, id, cfg.fold_title))
 end
 
 local function _evaluate_rule(name, rule, current_scope)
@@ -99,7 +99,7 @@ local function _process_context_menu(context, current_scope)
   if not cfg.enabled or not context or not context.options then return end
 
   local options = context.options
-  log.debug(_string_format("[ContextCleaner] Menu opened (Scope: %s) containing %d options", current_scope, #options))
+  log.debug(_string_format("Menu opened (Scope: %s) containing %d options", current_scope, #options))
 
   local to_remove_indices = {}
   local to_fold_options = {}
@@ -109,12 +109,12 @@ local function _process_context_menu(context, current_scope)
     if opt and opt.name and opt.name ~= "[Context Cleaner]" and opt.name ~= cfg.fold_title then
       local hide, hide_rule = _should_hide(opt.name, current_scope)
       if hide then
-        log.debug(_string_format("[ContextCleaner] [HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, hide_rule.pattern, current_scope))
+        log.debug(_string_format("[HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, hide_rule.pattern, current_scope))
         to_remove_indices[#to_remove_indices + 1] = i
       else
         local fold, fold_rule = _should_fold(opt.name, current_scope)
         if fold then
-          log.debug(_string_format("[ContextCleaner] [FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, fold_rule.pattern, current_scope))
+          log.debug(_string_format("[FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, fold_rule.pattern, current_scope))
           to_fold_options[#to_fold_options + 1] = opt
           to_remove_indices[#to_remove_indices + 1] = i
         end
@@ -141,7 +141,7 @@ local function _process_context_menu(context, current_scope)
           if newOpt.subMenu then
             newOpt.subMenu.parent = sub
           end
-          log.debug(_string_format("[ContextCleaner] Successfully moved option '%s' to sub-menu '%s'", opt.name, cfg.fold_title))
+          log.debug(_string_format("Successfully moved option '%s' to sub-menu '%s'", opt.name, cfg.fold_title))
         end
       end
     end
@@ -151,24 +151,32 @@ local function _process_context_menu(context, current_scope)
   for i = 1, #to_remove_indices do
     local idx = to_remove_indices[i]
     local removed_opt = options[idx]
-    table.remove(context.options, idx)
     if removed_opt then
-      log.debug(_string_format("[ContextCleaner] Removed option '%s' from parent menu", _tostring(removed_opt.name)))
+      context:removeOptionByName(removed_opt.name)
+      log.debug(_string_format("Removed option '%s' from parent menu", _tostring(removed_opt.name)))
     end
   end
 end
 
+local _inv_wrapper_dispatching = false
 local function _inv_wrapper(player_num, context, items)
+  if _inv_wrapper_dispatching then return end
+  _inv_wrapper_dispatching = true
   Events.OnFillInventoryObjectContextMenu.Remove(_inv_wrapper)
   Events.OnFillInventoryObjectContextMenu.Add(_inv_wrapper)
   _process_context_menu(context, "inventory")
+  _inv_wrapper_dispatching = false
 end
 
+local _world_wrapper_dispatching = false
 local function _world_wrapper(player_num, context, world_objects, test)
   if test then return true end
+  if _world_wrapper_dispatching then return end
+  _world_wrapper_dispatching = true
   Events.OnFillWorldObjectContextMenu.Remove(_world_wrapper)
   Events.OnFillWorldObjectContextMenu.Add(_world_wrapper)
   _process_context_menu(context, "world")
+  _world_wrapper_dispatching = false
 end
 
 local _context_cleaner_win_instance = nil
@@ -203,25 +211,12 @@ local function _toggle_context_cleaner_window()
 end
 
 local function _on_key_pressed(key)
-  local default_key = (Keyboard and Keyboard.KEY_NUMPAD7) or 71
-  local bound_key = _get_core():getKey("[null0x686F] Context Cleaner")
-  if bound_key == 0 or bound_key == nil then
-    bound_key = default_key
-  end
-
-  if key == bound_key then
-    log.debug("[ContextCleaner] Hotkey pressed -> Toggling window")
+  if key == context_cleaner_keybinds.get_bound_key() then
+    log.debug("Hotkey pressed -> Toggling window")
     _toggle_context_cleaner_window()
   end
 end
 Events.OnKeyPressed.Add(_on_key_pressed)
-
-local function _on_fill_world_context_menu(player, context, worldobjects, test)
-  if isDebugEnabled() then
-    context:addOption("[Context Cleaner Options]", nil, _toggle_context_cleaner_window)
-  end
-end
-Events.OnFillWorldObjectContextMenu.Add(_on_fill_world_context_menu)
 
 if Events.OnResetLua then
   Events.OnResetLua.Add(function()
