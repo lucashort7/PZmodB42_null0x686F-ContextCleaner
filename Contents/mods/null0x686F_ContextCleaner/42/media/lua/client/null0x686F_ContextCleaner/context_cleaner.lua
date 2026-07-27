@@ -1,8 +1,8 @@
-require("hortWiz_ContextCleaner/context_cleaner_keybinds")
+require("null0x686F_ContextCleaner/context_cleaner_keybinds")
 
-local cfg = require("hortWiz_ContextCleaner/cfg")
-local log = require("hortWiz_ContextCleaner/log")
-local preset_manager = require("hortWiz_ContextCleaner/preset_manager")
+local cfg = require("null0x686F_ContextCleaner/cfg")
+local log = require("null0x686F_ContextCleaner/log")
+local preset_manager = require("null0x686F_ContextCleaner/preset_manager")
 
 local _is_patched = false
 local _pairs = pairs
@@ -174,7 +174,7 @@ end
 local _context_cleaner_win_instance = nil
 
 local function _toggle_context_cleaner_window()
-  local ContextCleanerWindow = require("hortWiz_ContextCleaner/ui/context_cleaner_window")
+  local ContextCleanerWindow = require("null0x686F_ContextCleaner/ui/context_cleaner_window")
   if not _context_cleaner_win_instance then
     local w = 520
     local h = 380
@@ -204,7 +204,7 @@ end
 
 local function _on_key_pressed(key)
   local default_key = (Keyboard and Keyboard.KEY_NUMPAD7) or 71
-  local bound_key = _get_core():getKey("[HortWiz] Context Cleaner")
+  local bound_key = _get_core():getKey("[null0x686F] Context Cleaner")
   if bound_key == 0 or bound_key == nil then
     bound_key = default_key
   end

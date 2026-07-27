@@ -5,10 +5,10 @@ require("ISUI/ISButton")
 require("ISUI/ISComboBox")
 require("ISUI/ISScrollingListBox")
 
-local cfg = require("hortWiz_ContextCleaner/cfg")
-local log = require("hortWiz_ContextCleaner/log")
-local preset_manager = require("hortWiz_ContextCleaner/preset_manager")
-local context_cleaner = require("hortWiz_ContextCleaner/context_cleaner")
+local cfg = require("null0x686F_ContextCleaner/cfg")
+local log = require("null0x686F_ContextCleaner/log")
+local preset_manager = require("null0x686F_ContextCleaner/preset_manager")
+local context_cleaner = require("null0x686F_ContextCleaner/context_cleaner")
 
 local _pairs = pairs
 local _tostring = tostring

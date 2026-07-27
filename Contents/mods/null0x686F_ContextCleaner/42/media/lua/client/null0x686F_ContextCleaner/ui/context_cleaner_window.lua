@@ -6,8 +6,8 @@ require("ISUI/ISTextEntryBox")
 require("ISUI/ISComboBox")
 require("ISUI/ISScrollingListBox")
 
-local preset_manager = require("hortWiz_ContextCleaner/preset_manager")
-local context_cleaner = require("hortWiz_ContextCleaner/context_cleaner")
+local preset_manager = require("null0x686F_ContextCleaner/preset_manager")
+local context_cleaner = require("null0x686F_ContextCleaner/context_cleaner")
 
 local _ipairs = ipairs
 local _pairs = pairs

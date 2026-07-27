@@ -1,4 +1,4 @@
-name: Release HortWiz Context Cleaner
+name: Release null0x686F Context Cleaner
 
 on:
   push:
@@ -16,10 +16,10 @@ jobs:
       - name: Zip Mod Folder
         run: |
           mkdir release_build
-          zip -r release_build/HortWiz_ContextCleaner.zip Contents/
+          zip -r release_build/null0x686F_ContextCleaner.zip Contents/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release_build/HortWiz_ContextCleaner.zip
+          files: release_build/null0x686F_ContextCleaner.zip
           generate_release_notes: true

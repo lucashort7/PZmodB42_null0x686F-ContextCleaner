@@ -1,4 +1,4 @@
-local log = require("hortWiz_ContextCleaner/log")
+local log = require("null0x686F_ContextCleaner/log")
 
 local _tostring = tostring
 local _type = type

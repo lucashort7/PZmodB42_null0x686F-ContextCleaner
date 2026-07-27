@@ -1,5 +1,0 @@
-name=hortWiz_ContextCleaner
-poster=poster.png
-id=hortWiz_ContextCleaner
-description=Standalone $O(1)$ Context Menu Cleaner for Project Zomboid (B42).
-require=hortWiz_Core

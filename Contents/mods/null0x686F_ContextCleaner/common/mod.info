@@ -1,0 +1,6 @@
+name=null0x686F_ContextCleaner
+poster=poster.png
+id=null0x686F_ContextCleaner
+description=Standalone $O(1)$ Context Menu Cleaner for Project Zomboid (B42).
+require=null0x686F_CoreLib
+modversion=0.1.0

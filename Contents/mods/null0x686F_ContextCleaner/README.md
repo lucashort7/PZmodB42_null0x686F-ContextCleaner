@@ -1,4 +1,4 @@
-# HortWiz Context Cleaner (Standalone)
+# null0x686F Context Cleaner (Standalone)
 
 High-performance $O(1)$ context menu cleaner for Project Zomboid Build 42.
 
