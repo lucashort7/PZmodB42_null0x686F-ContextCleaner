@@ -1,4 +1,4 @@
-require("null0x686F_ContextCleaner/context_cleaner_keybinds")
+local context_cleaner_keybinds = require("null0x686F_ContextCleaner/context_cleaner_keybinds")
 
 local cfg = require("null0x686F_ContextCleaner/cfg")
 local log = require("null0x686F_ContextCleaner/log")
@@ -151,8 +151,8 @@ local function _process_context_menu(context, current_scope)
   for i = 1, #to_remove_indices do
     local idx = to_remove_indices[i]
     local removed_opt = options[idx]
-    table.remove(context.options, idx)
     if removed_opt then
+      context:removeOptionByName(removed_opt.name)
       log.debug(_string_format("Removed option '%s' from parent menu", _tostring(removed_opt.name)))
     end
   end
@@ -211,13 +211,7 @@ local function _toggle_context_cleaner_window()
 end
 
 local function _on_key_pressed(key)
-  local default_key = (Keyboard and Keyboard.KEY_NUMPAD7) or 71
-  local bound_key = _get_core():getKey("[null0x686F] Context Cleaner")
-  if bound_key == 0 or bound_key == nil then
-    bound_key = default_key
-  end
-
-  if key == bound_key then
+  if key == context_cleaner_keybinds.get_bound_key() then
     log.debug("Hotkey pressed -> Toggling window")
     _toggle_context_cleaner_window()
   end
