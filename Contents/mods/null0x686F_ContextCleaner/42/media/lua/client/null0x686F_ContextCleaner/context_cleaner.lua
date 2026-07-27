@@ -158,17 +158,25 @@ local function _process_context_menu(context, current_scope)
   end
 end
 
+local _inv_wrapper_dispatching = false
 local function _inv_wrapper(player_num, context, items)
+  if _inv_wrapper_dispatching then return end
+  _inv_wrapper_dispatching = true
   Events.OnFillInventoryObjectContextMenu.Remove(_inv_wrapper)
   Events.OnFillInventoryObjectContextMenu.Add(_inv_wrapper)
   _process_context_menu(context, "inventory")
+  _inv_wrapper_dispatching = false
 end
 
+local _world_wrapper_dispatching = false
 local function _world_wrapper(player_num, context, world_objects, test)
   if test then return true end
+  if _world_wrapper_dispatching then return end
+  _world_wrapper_dispatching = true
   Events.OnFillWorldObjectContextMenu.Remove(_world_wrapper)
   Events.OnFillWorldObjectContextMenu.Add(_world_wrapper)
   _process_context_menu(context, "world")
+  _world_wrapper_dispatching = false
 end
 
 local _context_cleaner_win_instance = nil
@@ -215,13 +223,6 @@ local function _on_key_pressed(key)
   end
 end
 Events.OnKeyPressed.Add(_on_key_pressed)
-
-local function _on_fill_world_context_menu(player, context, worldobjects, test)
-  if isDebugEnabled() then
-    context:addOption("[Context Cleaner Options]", nil, _toggle_context_cleaner_window)
-  end
-end
-Events.OnFillWorldObjectContextMenu.Add(_on_fill_world_context_menu)
 
 if Events.OnResetLua then
   Events.OnResetLua.Add(function()
