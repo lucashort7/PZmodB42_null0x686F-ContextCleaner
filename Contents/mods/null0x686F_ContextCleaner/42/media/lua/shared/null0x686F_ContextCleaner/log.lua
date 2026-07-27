@@ -1,5 +1,5 @@
 local cfg = require("null0x686F_ContextCleaner/cfg")
-local core_log = require("null0x686F_CoreLib/log")
+local core_log = require("null0x686F_CoreLib/utils/log")
 
 local function _get_level()
   if isDebugEnabled and isDebugEnabled() then
