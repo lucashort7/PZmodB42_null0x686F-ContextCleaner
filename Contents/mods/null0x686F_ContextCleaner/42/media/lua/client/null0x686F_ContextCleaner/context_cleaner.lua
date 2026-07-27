@@ -23,7 +23,7 @@ function context_cleaner.reload_preset(preset_id)
   cfg.fold_title = (data and data.fold_title) and data.fold_title or "[Utility Menus]"
   cfg.active_rules = (data and data.rules) and data.rules or {}
 
-  log.debug(_string_format("[ContextCleaner] Loaded %d rules for preset '%s' (Fold Title: '%s')", #cfg.active_rules, id, cfg.fold_title))
+  log.debug(_string_format("Loaded %d rules for preset '%s' (Fold Title: '%s')", #cfg.active_rules, id, cfg.fold_title))
 end
 
 local function _evaluate_rule(name, rule, current_scope)
@@ -99,7 +99,7 @@ local function _process_context_menu(context, current_scope)
   if not cfg.enabled or not context or not context.options then return end
 
   local options = context.options
-  log.debug(_string_format("[ContextCleaner] Menu opened (Scope: %s) containing %d options", current_scope, #options))
+  log.debug(_string_format("Menu opened (Scope: %s) containing %d options", current_scope, #options))
 
   local to_remove_indices = {}
   local to_fold_options = {}
@@ -109,12 +109,12 @@ local function _process_context_menu(context, current_scope)
     if opt and opt.name and opt.name ~= "[Context Cleaner]" and opt.name ~= cfg.fold_title then
       local hide, hide_rule = _should_hide(opt.name, current_scope)
       if hide then
-        log.debug(_string_format("[ContextCleaner] [HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, hide_rule.pattern, current_scope))
+        log.debug(_string_format("[HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, hide_rule.pattern, current_scope))
         to_remove_indices[#to_remove_indices + 1] = i
       else
         local fold, fold_rule = _should_fold(opt.name, current_scope)
         if fold then
-          log.debug(_string_format("[ContextCleaner] [FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, fold_rule.pattern, current_scope))
+          log.debug(_string_format("[FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, fold_rule.pattern, current_scope))
           to_fold_options[#to_fold_options + 1] = opt
           to_remove_indices[#to_remove_indices + 1] = i
         end
@@ -141,7 +141,7 @@ local function _process_context_menu(context, current_scope)
           if newOpt.subMenu then
             newOpt.subMenu.parent = sub
           end
-          log.debug(_string_format("[ContextCleaner] Successfully moved option '%s' to sub-menu '%s'", opt.name, cfg.fold_title))
+          log.debug(_string_format("Successfully moved option '%s' to sub-menu '%s'", opt.name, cfg.fold_title))
         end
       end
     end
@@ -153,7 +153,7 @@ local function _process_context_menu(context, current_scope)
     local removed_opt = options[idx]
     table.remove(context.options, idx)
     if removed_opt then
-      log.debug(_string_format("[ContextCleaner] Removed option '%s' from parent menu", _tostring(removed_opt.name)))
+      log.debug(_string_format("Removed option '%s' from parent menu", _tostring(removed_opt.name)))
     end
   end
 end
@@ -218,7 +218,7 @@ local function _on_key_pressed(key)
   end
 
   if key == bound_key then
-    log.debug("[ContextCleaner] Hotkey pressed -> Toggling window")
+    log.debug("Hotkey pressed -> Toggling window")
     _toggle_context_cleaner_window()
   end
 end
