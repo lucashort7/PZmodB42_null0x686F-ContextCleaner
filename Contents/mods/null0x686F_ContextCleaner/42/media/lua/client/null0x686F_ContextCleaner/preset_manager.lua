@@ -1,66 +1,78 @@
 local log = require("null0x686F_ContextCleaner/log")
 
-local _tostring = tostring
-local _type = type
-local _pairs = pairs
-local _ipairs = ipairs
-local _string_sub = string.sub
-local _string_find = string.find
-local _string_format = string.format
-
 local preset_manager = {}
 
+-- moved out of Zomboid/Lua/'s root, which holds ~110 loose files from every
+-- installed mod. LEGACY_FILE is the pre-move path: it is still read when the
+-- new one is absent, and never written or deleted. the cost of keeping it is
+-- 133 bytes sitting there; the cost of getting the move wrong is a published
+-- mod silently losing a user's rules.
+local PRESET_FILE = "null0x686F/contextcleaner_presets.txt"
+local LEGACY_FILE = "ContextCleaner_preset_default.txt"
+
+local DEFAULT_FOLD_TITLE = "[Utility Menus]"
+
+local VALID_ACTIONS = { hide = true, fold = true }
+local VALID_TYPES = { exact = true, wildcard = true, luapattern = true }
+local VALID_SCOPES = { all = true, world = true, inventory = true }
+
+-- the parenthesis is load-bearing: gsub returns (string, count), and without
+-- it this function returns both. every existing call site happened to use the
+-- result in a position that discards the second value, so it worked by luck.
 local function _trim(str)
-  return _tostring(str or ""):gsub("^%s+", ""):gsub("%s+$", "")
+  return (tostring(str or ""):gsub("^%s+", ""):gsub("%s+$", ""))
 end
 
-function preset_manager.get_preset_filename(preset_id)
-  return "ContextCleaner_preset_default.txt"
+local function _one_of(value, valid, fallback)
+  value = _trim(value):lower()
+  return valid[value] and value or fallback
 end
 
-function preset_manager.load_preset(preset_id)
-  local data = {
-    fold_title = "[Utility Menus]",
-    rules = {}
-  }
+local function _open_preset_reader()
+  local reader = getFileReader(PRESET_FILE, false)
+  if reader then return reader end
 
-  local filename = preset_manager.get_preset_filename(preset_id)
-  local reader = getFileReader(filename, false)
-  if not reader then
-    return data
+  reader = getFileReader(LEGACY_FILE, false)
+  if reader then
+    log.info("reading presets from the pre-move path; they migrate to", PRESET_FILE, "on next save")
   end
+  return reader
+end
+
+local function _parse_rule(line, rules)
+  local parts = {}
+  for part in line:gmatch("[^|]+") do
+    parts[#parts + 1] = _trim(part)
+  end
+
+  local pattern = parts[1] or ""
+  if pattern == "" then return end
+
+  local default_type = pattern:find("%*") and "wildcard" or "exact"
+
+  rules[#rules + 1] = {
+    pattern = pattern,
+    action = _one_of(parts[2], VALID_ACTIONS, "hide"),
+    type = _one_of(parts[3] or default_type, VALID_TYPES, "exact"),
+    scope = _one_of(parts[4], VALID_SCOPES, "all"),
+  }
+end
+
+function preset_manager.load_preset()
+  local data = { fold_title = DEFAULT_FOLD_TITLE, rules = {} }
+
+  local reader = _open_preset_reader()
+  if not reader then return data end
 
   local line = reader:readLine()
   while line do
     local trimmed = _trim(line)
     if trimmed ~= "" and not trimmed:find("^#") then
       if trimmed:find("^fold_title=") then
-        local val = _trim(trimmed:sub(12))
-        if val ~= "" then data.fold_title = val end
+        local title = _trim(trimmed:sub(12))
+        if title ~= "" then data.fold_title = title end
       else
-        local parts = {}
-        for part in trimmed:gmatch("[^|]+") do
-          parts[#parts + 1] = _trim(part)
-        end
-
-        local pattern = parts[1] or ""
-        local action = _string_sub(_trim(parts[2] or "hide"):lower(), 1, 10)
-        local ptype = _string_sub(_trim(parts[3] or (pattern:find("%*") and "wildcard" or "exact")):lower(), 1, 10)
-        local scope = _string_sub(_trim(parts[4] or "all"):lower(), 1, 10)
-
-        if action ~= "hide" and action ~= "fold" then action = "hide" end
-        if ptype ~= "exact" and ptype ~= "wildcard" and ptype ~= "luapattern" then ptype = "exact" end
-        if scope ~= "all" and scope ~= "world" and scope ~= "inventory" then scope = "all" end
-
-        if pattern ~= "" then
-          data.rules[#data.rules + 1] = {
-            pattern = pattern,
-            action = action,
-            type = ptype,
-            scope = scope,
-            raw = _string_format("%s|%s|%s|%s", pattern, action, ptype, scope)
-          }
-        end
+        _parse_rule(trimmed, data.rules)
       end
     end
     line = reader:readLine()
@@ -70,23 +82,21 @@ function preset_manager.load_preset(preset_id)
   return data
 end
 
-function preset_manager.save_preset(preset_id, data)
-  if not data or _type(data) ~= "table" then return false end
-  local filename = preset_manager.get_preset_filename(preset_id)
-  local writer = getFileWriter(filename, true, false)
+function preset_manager.save_preset(data)
+  if type(data) ~= "table" then return false end
+
+  local writer = getFileWriter(PRESET_FILE, true, false)
   if not writer then return false end
 
-  local title = data.fold_title or "[Utility Menus]"
-  writer:write(_string_format("fold_title=%s\n", title))
+  writer:write(string.format("fold_title=%s\n", data.fold_title or DEFAULT_FOLD_TITLE))
 
-  local rules = data.rules or {}
-  for i = 1, #rules do
-    local rule = rules[i]
-    if rule and rule.pattern and rule.pattern ~= "" then
-      local act = (rule.action or "hide"):lower()
-      local typ = (rule.type or "exact"):lower()
-      local scp = (rule.scope or "all"):lower()
-      writer:write(_string_format("%s|%s|%s|%s\n", rule.pattern, act, typ, scp))
+  for _, rule in ipairs(data.rules or {}) do
+    if rule.pattern and rule.pattern ~= "" then
+      writer:write(string.format("%s|%s|%s|%s\n",
+        rule.pattern,
+        (rule.action or "hide"):lower(),
+        (rule.type or "exact"):lower(),
+        (rule.scope or "all"):lower()))
     end
   end
 
