@@ -1,0 +1,12 @@
+{
+    "UI_null0x686F_ContextCleaner_options_title": "null0x686F ContextCleaner",
+    "UI_null0x686F_ContextCleaner_toggle_key": "Toggle Context Cleaner Window",
+
+    "UI_null0x686F_ContextCleaner_window_title": "Context Cleaner Options",
+    "UI_null0x686F_ContextCleaner_btn_save_title": "[ Save Title ]",
+    "UI_null0x686F_ContextCleaner_btn_add": "[ + Add ]",
+    "UI_null0x686F_ContextCleaner_btn_update": "[ Update ]",
+    "UI_null0x686F_ContextCleaner_btn_edit": "[ Edit ]",
+    "UI_null0x686F_ContextCleaner_btn_cancel": "[ Cancel ]",
+    "UI_null0x686F_ContextCleaner_btn_remove": "[ Remove Selected ]"
+}

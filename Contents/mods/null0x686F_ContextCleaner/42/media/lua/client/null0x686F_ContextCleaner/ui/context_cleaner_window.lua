@@ -23,7 +23,7 @@ local _THEME = {
 
 function ContextCleanerWindow:initialise()
   ISCollapsableWindow.initialise(self)
-  self.title = "Context Cleaner Options"
+  self.title = getText("UI_null0x686F_ContextCleaner_window_title")
   self.resizable = true
   self.minimumWidth = 540
   self.minimumHeight = 380
@@ -48,7 +48,7 @@ function ContextCleanerWindow:createChildren()
   self.title_box:instantiate()
   self:addChild(self.title_box)
 
-  self.save_title_btn = ISButton:new(310, th + 7, 95, 22, "[ Save Title ]",
+  self.save_title_btn = ISButton:new(310, th + 7, 95, 22, getText("UI_null0x686F_ContextCleaner_btn_save_title"),
     self, ContextCleanerWindow.on_save_title_click)
   self.save_title_btn:initialise()
   self.save_title_btn:instantiate()
@@ -88,7 +88,8 @@ function ContextCleanerWindow:createChildren()
   self.entry_box:instantiate()
   self:addChild(self.entry_box)
 
-  self.add_btn = ISButton:new(self.width - 80, mid_y, 70, 22, "[ + Add ]", self, ContextCleanerWindow.on_add_click)
+  self.add_btn = ISButton:new(self.width - 80, mid_y, 70, 22,
+    getText("UI_null0x686F_ContextCleaner_btn_add"), self, ContextCleanerWindow.on_add_click)
   self.add_btn:initialise()
   self.add_btn:instantiate()
   self.add_btn.backgroundColor = _THEME.btnNormal
@@ -107,7 +108,7 @@ function ContextCleanerWindow:createChildren()
   -- BOTTOM ROW
   local bot_y = self.height - 30
 
-  self.cancel_btn = ISButton:new(self.width - 290, bot_y, 70, 22, "[ Cancel ]",
+  self.cancel_btn = ISButton:new(self.width - 290, bot_y, 70, 22, getText("UI_null0x686F_ContextCleaner_btn_cancel"),
     self, ContextCleanerWindow.on_cancel_click)
   self.cancel_btn:initialise()
   self.cancel_btn:instantiate()
@@ -115,14 +116,15 @@ function ContextCleanerWindow:createChildren()
   self.cancel_btn.borderColor = _THEME.border
   self:addChild(self.cancel_btn)
 
-  self.edit_btn = ISButton:new(self.width - 215, bot_y, 65, 22, "[ Edit ]", self, ContextCleanerWindow.on_edit_click)
+  self.edit_btn = ISButton:new(self.width - 215, bot_y, 65, 22,
+    getText("UI_null0x686F_ContextCleaner_btn_edit"), self, ContextCleanerWindow.on_edit_click)
   self.edit_btn:initialise()
   self.edit_btn:instantiate()
   self.edit_btn.backgroundColor = _THEME.btnNormal
   self.edit_btn.borderColor = _THEME.border
   self:addChild(self.edit_btn)
 
-  self.remove_btn = ISButton:new(self.width - 145, bot_y, 135, 22, "[ Remove Selected ]",
+  self.remove_btn = ISButton:new(self.width - 145, bot_y, 135, 22, getText("UI_null0x686F_ContextCleaner_btn_remove"),
     self, ContextCleanerWindow.on_remove_click)
   self.remove_btn:initialise()
   self.remove_btn:instantiate()
@@ -201,7 +203,7 @@ function ContextCleanerWindow:reset_edit_state()
   self.editing_index = nil
   if self.entry_box then self.entry_box:setText("") end
   if self.add_btn then
-    self.add_btn:setTitle("[ + Add ]")
+    self.add_btn:setTitle(getText("UI_null0x686F_ContextCleaner_btn_add"))
     self.add_btn.backgroundColor = _THEME.btnNormal
   end
 end
@@ -256,7 +258,7 @@ function ContextCleanerWindow:on_edit_click()
       if self.type_combo then self.type_combo:select(rule.type or "exact") end
       if self.scope_combo then self.scope_combo:select(rule.scope or "all") end
 
-      self.add_btn:setTitle("[ Update ]")
+      self.add_btn:setTitle(getText("UI_null0x686F_ContextCleaner_btn_update"))
       self.add_btn.backgroundColor = _THEME.btnAmber
     end
   end
