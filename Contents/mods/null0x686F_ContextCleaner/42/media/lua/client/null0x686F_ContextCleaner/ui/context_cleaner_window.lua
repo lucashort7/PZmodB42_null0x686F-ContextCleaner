@@ -9,10 +9,6 @@ require("ISUI/ISScrollingListBox")
 local preset_manager = require("null0x686F_ContextCleaner/preset_manager")
 local context_cleaner = require("null0x686F_ContextCleaner/context_cleaner")
 
-local _ipairs = ipairs
-local _pairs = pairs
-local _tostring = tostring
-local _string_lower = string.lower
 
 ContextCleanerWindow = ISCollapsableWindow:derive("ContextCleanerWindow")
 
@@ -31,9 +27,8 @@ function ContextCleanerWindow:initialise()
   self.resizable = true
   self.minimumWidth = 540
   self.minimumHeight = 380
-  self.current_preset = "default"
   self.editing_index = nil
-  self.preset_data = preset_manager.load_preset(self.current_preset) or { fold_title = "[Utility Menus]", rules = {} }
+  self.preset_data = preset_manager.load_preset() or { fold_title = "[Utility Menus]", rules = {} }
 end
 
 function ContextCleanerWindow:createChildren()
@@ -53,7 +48,8 @@ function ContextCleanerWindow:createChildren()
   self.title_box:instantiate()
   self:addChild(self.title_box)
 
-  self.save_title_btn = ISButton:new(310, th + 7, 95, 22, "[ Save Title ]", self, ContextCleanerWindow.on_save_title_click)
+  self.save_title_btn = ISButton:new(310, th + 7, 95, 22, "[ Save Title ]",
+    self, ContextCleanerWindow.on_save_title_click)
   self.save_title_btn:initialise()
   self.save_title_btn:instantiate()
   self.save_title_btn.backgroundColor = _THEME.btnGreen
@@ -111,7 +107,8 @@ function ContextCleanerWindow:createChildren()
   -- BOTTOM ROW
   local bot_y = self.height - 30
 
-  self.cancel_btn = ISButton:new(self.width - 290, bot_y, 70, 22, "[ Cancel ]", self, ContextCleanerWindow.on_cancel_click)
+  self.cancel_btn = ISButton:new(self.width - 290, bot_y, 70, 22, "[ Cancel ]",
+    self, ContextCleanerWindow.on_cancel_click)
   self.cancel_btn:initialise()
   self.cancel_btn:instantiate()
   self.cancel_btn.backgroundColor = _THEME.btnNormal
@@ -125,7 +122,8 @@ function ContextCleanerWindow:createChildren()
   self.edit_btn.borderColor = _THEME.border
   self:addChild(self.edit_btn)
 
-  self.remove_btn = ISButton:new(self.width - 145, bot_y, 135, 22, "[ Remove Selected ]", self, ContextCleanerWindow.on_remove_click)
+  self.remove_btn = ISButton:new(self.width - 145, bot_y, 135, 22, "[ Remove Selected ]",
+    self, ContextCleanerWindow.on_remove_click)
   self.remove_btn:initialise()
   self.remove_btn:instantiate()
   self.remove_btn.backgroundColor = _THEME.btnRed
@@ -166,7 +164,7 @@ end
 
 function ContextCleanerWindow:refresh_list_from_state()
   self.listbox:clear()
-  self.preset_data = preset_manager.load_preset(self.current_preset) or { fold_title = "[Utility Menus]", rules = {} }
+  self.preset_data = preset_manager.load_preset() or { fold_title = "[Utility Menus]", rules = {} }
 
   if self.title_box then
     self.title_box:setText(self.preset_data.fold_title or "[Utility Menus]")
@@ -176,7 +174,8 @@ function ContextCleanerWindow:refresh_list_from_state()
   for i = 1, #rules do
     local rule = rules[i]
     if rule and rule.pattern and rule.pattern ~= "" then
-      local raw_line = string.format("%s|%s|%s|%s", rule.pattern, rule.action or "hide", rule.type or "exact", rule.scope or "all")
+      local raw_line = string.format("%s|%s|%s|%s", rule.pattern,
+        rule.action or "hide", rule.type or "exact", rule.scope or "all")
       self.listbox:addItem(raw_line, rule)
     end
   end
@@ -190,8 +189,8 @@ function ContextCleanerWindow:sync_and_save()
     end
   end
 
-  preset_manager.save_preset(self.current_preset, self.preset_data)
-  context_cleaner.reload_preset(self.current_preset)
+  preset_manager.save_preset(self.preset_data)
+  context_cleaner.reload_preset()
 end
 
 function ContextCleanerWindow:on_save_title_click()
@@ -227,7 +226,6 @@ function ContextCleanerWindow:on_add_click()
         action = action,
         type = ptype,
         scope = scope,
-        raw = string.format("%s|%s|%s|%s", text, action, ptype, scope)
       }
       self:reset_edit_state()
     else
@@ -237,7 +235,6 @@ function ContextCleanerWindow:on_add_click()
         action = action,
         type = ptype,
         scope = scope,
-        raw = string.format("%s|%s|%s|%s", text, action, ptype, scope)
       }
       self.entry_box:setText("")
     end
