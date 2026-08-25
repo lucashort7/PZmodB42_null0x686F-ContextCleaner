@@ -6,31 +6,31 @@ Originally based on [b]Context Cleaner[/b] by Anach, full credit to the original
 
 [hr][/hr]
 
-[h2]📸 Before / After[/h2]
+[h2]Before / After[/h2]
 
 [img]https://i.imgur.com/c7Cvq2N.png[/img]
 [img]https://i.imgur.com/wQF7ghY.png[/img]
 
 [hr][/hr]
 
-[h2]🎯 Key Features[/h2]
+[h2]Key Features[/h2]
 
 [list]
-[*] ⚡ [b]Nothing runs until you open a menu[/b]. No [i]OnTick[/i], no [i]OnPlayerUpdate[/i], nothing per frame. The mod is idle until a context menu is built.
-[*] 🥇 [b]It sees what other mods added[/b]. The handler removes and re-registers itself on every fire, which puts it last in the queue, so it filters the finished menu instead of a half-built one.
-[*] 🖱️ [b]Works on both menus[/b]. Filters [i]OnFillInventoryObjectContextMenu[/i] and [i]OnFillWorldObjectContextMenu[/i] independently.
-[*] 🪟 [b]Dedicated config UI[/b]. The [i]ContextCleanerWindow[/i], no digging through text files to add a rule.
-[*] ✂️ [b]Hide or Fold[/b]. Remove clutter outright, or tuck it into a collapsible submenu instead of losing it completely.
-[*] 🔍 [b]Flexible matching[/b]. Exact text, wildcard (*), or full Lua patterns for power users.
-[*] 💾 [b]Persistent config[/b]. Rules saved to [i]Zomboid/Lua/ContextCleaner_preset_default.txt[/i], survives between sessions.
+[*] [b]Nothing runs until you open a menu[/b]. No [i]OnTick[/i], no [i]OnPlayerUpdate[/i], nothing per frame. The mod is idle until a context menu is built.
+[*] [b]It sees what other mods added[/b]. The handler removes and re-registers itself on every fire, which puts it last in the queue, so it filters the finished menu instead of a half-built one.
+[*] [b]Works on both menus[/b]. Filters [i]OnFillInventoryObjectContextMenu[/i] and [i]OnFillWorldObjectContextMenu[/i] independently.
+[*] [b]Dedicated config UI[/b]. The [i]ContextCleanerWindow[/i], no digging through text files to add a rule.
+[*] [b]Hide or Fold[/b]. Remove clutter outright, or tuck it into a collapsible submenu instead of losing it completely.
+[*] [b]Flexible matching[/b]. Exact text, wildcard (*), or full Lua patterns for power users.
+[*] [b]Persistent config[/b]. Rules saved to [i]Zomboid/Lua/ContextCleaner_preset_default.txt[/i], survives between sessions.
 [/list]
 
 [hr][/hr]
 
-[h2]⚙️ How To Use[/h2]
+[h2]How To Use[/h2]
 
 [list]
-[*] Press [b]Numpad 7[/b] (default keybind) to open the ContextCleaner window. That is the only way in, there's no menu entry for it (on purpose, it keeps the menus you're trying to clean uncluttered too 😄).
+[*] Press [b]Numpad 7[/b] (default keybind) to open the ContextCleaner window. That is the only way in, there's no menu entry for it (on purpose, it keeps the menus you're trying to clean uncluttered too ).
 [*] Add a rule with 4 fields:
 [/list]
 
@@ -45,7 +45,7 @@ Originally based on [b]Context Cleaner[/b] by Anach, full credit to the original
 
 [hr][/hr]
 
-[h2]🧠 A Word on Performance[/h2]
+[h2]A Word on Performance[/h2]
 
 Here is the honest shape of it, because a mod that sells itself on performance owes you the real number. When a menu opens, ContextCleaner walks the options once and checks each one against your rules. That means the work is [i]options × rules[/i], and the rule count is the half you control.
 
@@ -53,7 +53,7 @@ Stacking 30+ [i]exact[/i]/[i]wildcard[/i] rules means 30+ comparisons per menu o
 
 [hr][/hr]
 
-[h2]🔧 Compatibility[/h2]
+[h2]Compatibility[/h2]
 
 [list]
 [*] Project Zomboid [b]Build 42[/b]
@@ -62,13 +62,13 @@ Stacking 30+ [i]exact[/i]/[i]wildcard[/i] rules means 30+ comparisons per menu o
 
 [hr][/hr]
 
-[h2]⭐ Support & Feedback[/h2]
+[h2]Support & Feedback[/h2]
 
 [list]
-[*] ⭐ Rate on the Workshop if it's useful to you
-[*] 💬 Bug reports and suggestions welcome in the comments
-[*] 🧩 Part of the [b]null0x686F[/b] mod suite, check my other mods for more QoL/dev tooling
-[*] 🔗 Source code: [url=https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner]github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner[/url]
+[*] Rate on the Workshop if it's useful to you
+[*] Bug reports and suggestions welcome in the comments
+[*] Part of the [b]null0x686F[/b] mod suite, check my other mods for more QoL/dev tooling
+[*] Source code: [url=https://github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner]github.com/lucashort7/PZmodB42_null0x686F-ContextCleaner[/url]
 [/list]
 
-Found a menu this can't clean? Post the option's exact text in the comments and I'll work out the pattern for it. 🧹
+Found a menu this can't clean? Post the option's exact text in the comments and I'll work out the pattern for it.
