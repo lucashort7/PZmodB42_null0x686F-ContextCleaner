@@ -6,7 +6,6 @@ local preset_manager = require("null0x686F_ContextCleaner/preset_manager")
 
 local _is_patched = false
 local _pairs = pairs
-local _ipairs = ipairs
 local _tostring = tostring
 local _string_lower = string.lower
 local _string_format = string.format
@@ -15,15 +14,13 @@ local _get_core = getCore
 
 local context_cleaner = {}
 
-function context_cleaner.reload_preset(preset_id)
-  local id = preset_id or cfg.current_preset or "default"
-  cfg.current_preset = id
-  local data = preset_manager.load_preset(id)
+function context_cleaner.reload_preset()
+  local data = preset_manager.load_preset()
 
-  cfg.fold_title = (data and data.fold_title) and data.fold_title or "[Utility Menus]"
-  cfg.active_rules = (data and data.rules) and data.rules or {}
+  cfg.fold_title = data.fold_title or "[Utility Menus]"
+  cfg.active_rules = data.rules or {}
 
-  log.debug(_string_format("Loaded %d rules for preset '%s' (Fold Title: '%s')", #cfg.active_rules, id, cfg.fold_title))
+  log.debug(_string_format("Loaded %d rules (Fold Title: '%s')", #cfg.active_rules, cfg.fold_title))
 end
 
 local function _evaluate_rule(name, rule, current_scope)
@@ -109,12 +106,14 @@ local function _process_context_menu(context, current_scope)
     if opt and opt.name and opt.name ~= "[Context Cleaner]" and opt.name ~= cfg.fold_title then
       local hide, hide_rule = _should_hide(opt.name, current_scope)
       if hide then
-        log.debug(_string_format("[HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, hide_rule.pattern, current_scope))
+        log.debug(_string_format("[HIDE MATCH] Option '%s' matched pattern '%s' (Scope: %s)",
+          opt.name, hide_rule.pattern, current_scope))
         to_remove_indices[#to_remove_indices + 1] = i
       else
         local fold, fold_rule = _should_fold(opt.name, current_scope)
         if fold then
-          log.debug(_string_format("[FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)", opt.name, fold_rule.pattern, current_scope))
+          log.debug(_string_format("[FOLD MATCH] Option '%s' matched pattern '%s' (Scope: %s)",
+            opt.name, fold_rule.pattern, current_scope))
           to_fold_options[#to_fold_options + 1] = opt
           to_remove_indices[#to_remove_indices + 1] = i
         end
@@ -159,7 +158,7 @@ local function _process_context_menu(context, current_scope)
 end
 
 local _inv_wrapper_dispatching = false
-local function _inv_wrapper(player_num, context, items)
+local function _inv_wrapper(_player_num, context, _items)
   if _inv_wrapper_dispatching then return end
   _inv_wrapper_dispatching = true
   Events.OnFillInventoryObjectContextMenu.Remove(_inv_wrapper)
@@ -169,7 +168,7 @@ local function _inv_wrapper(player_num, context, items)
 end
 
 local _world_wrapper_dispatching = false
-local function _world_wrapper(player_num, context, world_objects, test)
+local function _world_wrapper(_player_num, context, _world_objects, test)
   if test then return true end
   if _world_wrapper_dispatching then return end
   _world_wrapper_dispatching = true

@@ -1,5 +1,5 @@
 local _mod_id = "null0x686F_ContextCleaner"
-local _mod_name = "null0x686F ContextCleaner"
+local _mod_name_key = "UI_null0x686F_ContextCleaner_options_title"
 local _key_id = "ContextCleaner_ToggleKey"
 
 local _keyboard = Keyboard
@@ -10,10 +10,10 @@ local function _init_mod_options()
     return
   end
 
-  local options = PZAPI.ModOptions:create(_mod_id, _mod_name)
+  local options = PZAPI.ModOptions:create(_mod_id, getText(_mod_name_key))
   if not options then return end
 
-  options:addKeyBind(_key_id, "Toggle Context Cleaner Window", _default_key)
+  options:addKeyBind(_key_id, getText("UI_null0x686F_ContextCleaner_toggle_key"), _default_key)
 end
 
 local function get_bound_key()
